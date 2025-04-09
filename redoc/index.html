@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>fraude-api-0.2</title>
+        <meta charset='UTF-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <style>body{margin:0;padding:0;} redoc{display:block;}</style>
+    </head>
+    <body>
+        <rapi-pdf id='rapi-pdf' hide-input="true" pdf-title="fraude-api-0.2" style="width: 122px;height: 26px;font-size: 15px;padding-bottom: 5px;padding-top: 5px;margin-left: 2px" button-bg="#b44646"></rapi-pdf>
+        <redoc id='redoc' sort-tags-alphabetically="true"></redoc>
+        <script>
+            const extract = function(v) {
+                return decodeURIComponent(v.replace(/(?:^|.*;\s*)contextPath\s*=\s*([^;]*).*$|^.*$/, "$1"));
+            }
+            const cookie = extract(document.cookie);
+            const contextPath = cookie === '' ? extract(window.location.search.substring(1)) : cookie;
+            const head = document.getElementsByTagName('head')[0];
+            script(contextPath + "/redoc/res/rapipdf-min.js", head)
+            const redocJs = script(contextPath + "/redoc/res/redoc.standalone.js", head, true);
+            redocJs.onload = function () {
+                Redoc.init(contextPath + '/swagger/fraude-api-0.2.yml');
+            }
+            document.getElementById('rapi-pdf').setAttribute('spec-url', contextPath + '/swagger/fraude-api-0.2.yml');
+
+            function script(src, head, defer) {
+                const el = document.createElement('script');
+                el.src = src;
+                if (defer !== undefined && defer) {
+                    el.setAttribute("defer", "");
+                }
+                head.appendChild(el);
+                return el;
+            }
+        </script>
+    </body>
+</html>
